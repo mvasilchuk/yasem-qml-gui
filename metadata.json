@@ -1,0 +1,20 @@
+{
+  "name":"Desktop QML GUI plugin",
+  "version": "0.1",
+  "id": "desktop-qml-gui",
+  "roles": [
+        "gui",
+        {
+            "name":"config",
+            "flags": "system|hidden"
+        }
+    ],
+    "dependencies": [
+       "browser",
+       {
+         "role": "mediaplayer",
+         "required": false
+       }
+    ],
+    "flags": "gui"
+}
