@@ -5,6 +5,9 @@
 #include <QQmlEngine>
 #include <QQuickWindow>
 #include <QQmlComponent>
+#include <QQuickItem>
+#include <QQmlApplicationEngine>
+#include <QApplication>
 
 
 using namespace yasem;
@@ -14,6 +17,10 @@ QmlGui::QmlGui()
     QSettings* settings = Core::instance()->settings();
     settings->beginGroup("DesktopQmlGui");
     settings->endGroup();
+
+    engine = NULL;
+    mainWindow = NULL;
+    rootObject = NULL;
 }
 
 
@@ -22,20 +29,15 @@ PLUGIN_ERROR_CODES QmlGui::initialize()
     DEBUG() << "initialize";
     //ProfileManager::instance()->loadProfiles();
 
-    QQmlEngine engine;
-    QQmlComponent *component = new QQmlComponent(&engine);
-    component->loadUrl(QUrl("qrc:/qml/mainwindow.qml"));
-    DEBUG() << component->errorString();
-    for(QQmlError err: component->errors())
-    {
-        ERROR() << "qml error:" << err.description();
-    }
-    QObject *topLevel = component->create();
-    QQuickWindow *window = qobject_cast<QQuickWindow *>(topLevel);
+    engine = new QQmlApplicationEngine();
+    engine->load(QUrl("qrc:/qml/mainwindow.qml"));
+    rootObject = (QQuickItem*)engine->rootObjects().value(0);
 
-    QSurfaceFormat surfaceFormat = window->requestedFormat();
-    window->setFormat(surfaceFormat);
-    window->show();
+    mainWindow = qobject_cast<QQuickWindow *>(rootObject);
+    mainWindow->show();
+
+    webView = rootObject->findChild<QQuickItem*>("web_view");
+    connect(mainWindow, &QQuickWindow::frameSwapped, webView, &QQuickItem::update);
 
     DEBUG() << "QML init";
 
@@ -88,4 +90,10 @@ void QmlGui::repaintGui()
 QList<QMenu *> QmlGui::getMenuItems()
 {
     return QList<QMenu*>();
+}
+
+
+QRect yasem::QmlGui::widgetRect()
+{
+    return QRect(0, 0, rootObject->width(), rootObject->height());
 }

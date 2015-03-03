@@ -6,6 +6,9 @@
 #include "guiplugin.h"
 
 #include <QRect>
+#include <QQuickItem>
+#include <QQuickWindow>
+#include <QQmlApplicationEngine>
 
 namespace yasem {
 
@@ -35,6 +38,16 @@ public:
     bool getFullscreen();
     void repaintGui();
     QList<QMenu *> getMenuItems();
+
+private:
+    QQmlApplicationEngine* engine;
+    QQuickWindow* mainWindow;
+    QQuickItem* rootObject;
+    QQuickItem* webView;
+
+    // GuiPlugin interface
+public:
+    QRect widgetRect();
 };
 }
 

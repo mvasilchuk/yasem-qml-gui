@@ -1,31 +1,23 @@
-import QtQuick 2.2
+import QtQuick 2.3
+import QtQuick.Window 2.0
 import QtQuick.Controls 1.2
-import QtQuick.Layouts 1.0
-import QtQuick.Dialogs 1.1
-import QtQuick.Window 2.1
 import com.mvas.yasem.WebViewQml 1.0
-import QtWebKit 3.0
 
 ApplicationWindow {
+    id: mainWindow
     visible: true
-    width: 800
-    height: 800
+    width: 1000
+    height: 1000
     color: "white"
 
-    Label {
-        text: "Hello, world"
+    WebViewQml  {
+        id: web_view
+        objectName: "web_view"
+        anchors.fill: parent
+        enabled: true
     }
 
-    WebViewQml  {
-        //anchors.fill: parent
-
-        /*Component.onCompleted: {
-            console.log("parent completed!!!")
-            //qmlInit()
-           // rect(0, 0, 400, 500)
-            //load("http://google.com")
-        }*/
+    Component.onCompleted: {
 
     }
 }
-

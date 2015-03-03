@@ -6,9 +6,7 @@
 
 VERSION = 0.1.0
 
-QT       += qml quick
-
-QT       -= gui
+QT       += gui qml quick declarative
 
 TARGET = yasem-qml-gui
 TEMPLATE = lib
